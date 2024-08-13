@@ -1,0 +1,39 @@
+mport pyvisa
+
+# Initialize VISA resource manager
+rm = pyvisa.ResourceManager()
+
+# Replace 'GPIB0::24::INSTR' with your actual resource name
+signal_generator = rm.open_resource('GPIB0::24::INSTR')
+
+# Check if connection is successful
+try:
+    idn = signal_generator.query('*IDN?')
+    print(f"Connected to: {idn}")
+except Exception as e:
+    print(f"Failed to connect to the instrument: {e}")
+    exit(1)
+
+# Example: Set frequency to 12.0 GHz
+try:
+    signal_generator.write('FREQ:CW 12.0 GHz')
+    print("Frequency set to 12.0 GHz")
+except Exception as e:
+    print(f"Failed to set frequency: {e}")
+
+# Example: Set output power to -3 dBm
+try:
+    signal_generator.write('POW:LEV -3 dBm')
+    print("Power level set to -3 dBm")
+except Exception as e:
+    print(f"Failed to set power level: {e}")
+
+# Example: Enable RF output
+try:
+    signal_generator.write('OUTP ON')
+    print("RF output enabled")
+except Exception as e:
+    print(f"Failed to enable RF output: {e}")
+
+
+
